@@ -8,3 +8,6 @@
 - Read up on the following [implementation tips][getting started with r]
 
 [getting started with r]: http://trevorstephens.com/kaggle-titanic-tutorial/getting-started-with-r/
+
+## todo:
+- Convert codebook.txt to markdown
