@@ -38,6 +38,18 @@ GeneratePairwisePlot <- function(df){
     #ggcorplot(data = df)
 }
 
+FactorData <- function(df_train, df_test){
+    FactorDataHelper <- function(df, is_train){
+        if (is_train) df$Survived <- factor(df$Survived)
+        df$Pclass <- factor(df$Pclass, levels = c(1,2,3), ordered = T)
+        return(df)
+    }
+    df_train <- FactorDataHelper(df_train, T)
+    df_test <- FactorDataHelper(df_test, F)
+
+    return(list(df_train, df_test))
+}
+
 # Helper function to reset par
 resetPar <- function() {
     dev.new()
@@ -49,4 +61,7 @@ resetPar <- function() {
 
 LoadData()
 GenerateMissingValuePlots(df_train)
+result <- FactorData(df_train, df_test)
+df_train <- result[[1]]
+df_test <- result[[2]]
 GeneratePairwisePlot(df_train)
