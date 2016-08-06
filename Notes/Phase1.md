@@ -24,3 +24,26 @@ Why was age missing?
 - In several data sets, age often has a high missing value rate. Again this may be a privacy thing.
 - Though I don't see why people will hide the age of their children, so it may be useful to
   identify children
+
+## Data Analysis
+Perform the following:
+- Correlation plot between all variables
+- Particularly interested in:
+    - What is the relationship between Pclass and Fare?
+    - What is the significance of the tickets with non-numbers?
+    - Examine the claim of women and children have higher survival rate?
+    - What is the survival rate of families vs individuals?
+    - what is the survival rate based on Pclass? (Perhaps split this by group to get an unbiased
+      figure)
+
+Correlation Plots show some interesting observations:
+- Females have a much higher chance of survival
+- More Males than females
+- The person with the highest fare survived
+- Fare has a slight positive correlation with survival
+- Some variables may need to be turned into factors, since these graphs seem a bit weird
+
+## Initial Models
+- Re-create simple python model for gender survival rate in R
+- Run simple random forest model in R
+- Run sample python scripts to see what they do
