@@ -12,7 +12,7 @@ Why was most of the Cabin entries missing?
 - Perhaps privacy, it may be in the best interest of the passangers that whoever has access to this
   list not know the locations of passangers.
 - Although... I would assume that when signing off someone has a record of which cabin each
-  passanger belongs to (just like in a hotel?)
+  passanger belongs to (just like in a hotel?).
 - Even so the ones that were filled up were done by families, perhaps this is necessary in order to
   locate family members in times of emergency.
 
@@ -23,11 +23,11 @@ Why is age important?
 Why was age missing?
 - In several data sets, age often has a high missing value rate. Again this may be a privacy thing.
 - Though I don't see why people will hide the age of their children, so it may be useful to
-  identify children
+  identify children.
 
 ## Data Analysis
 Perform the following:
-- Correlation plot between all variables
+- Correlation plot between all variables [X]
 - Particularly interested in:
     - What is the relationship between Pclass and Fare?
     - What is the significance of the tickets with non-numbers?
@@ -37,13 +37,18 @@ Perform the following:
       figure)
 
 Correlation Plots show some interesting observations:
-- Females have a much higher chance of survival
-- More Males than females
-- The person with the highest fare survived
-- Fare has a slight positive correlation with survival
-- Some variables may need to be turned into factors, since these graphs seem a bit weird
+- Females have a much higher chance of survival.
+- More Males than females.
+- The person with the highest fare survived.
+- Fare has a slight positive correlation with survival.
+- Some variables may need to be turned into factors, since these graphs seem a bit weird.
+
+Pclass vs Fare
+- While there is a correlation between PClass and Fare, there are overlaps between the classes.
+- This could be because some tickets were booked late or children and elderly pay less - concession.
+- There are a lot of people with fares at around 10 dollars.
 
 ## Initial Models
-- Re-create simple python model for gender survival rate in R
-- Run simple random forest model in R
-- Run sample python scripts to see what they do
+- Re-create simple python model for gender survival rate in R.
+- Run simple random forest model in R.
+- Run sample python scripts to see what they do.
