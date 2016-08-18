@@ -29,8 +29,8 @@ Why was age missing?
 Perform the following:
 - Correlation plot between all variables [X]
 - Particularly interested in:
-    - What is the relationship between Pclass and Fare?
-    - What is the significance of the tickets with non-numbers?
+    - What is the relationship between Pclass and Fare? [X]
+    - What is the significance of the tickets with non-numbers? [X]
     - Examine the claim of women and children have higher survival rate?
     - What is the survival rate of families vs individuals?
     - what is the survival rate based on Pclass? (Perhaps split this by group to get an unbiased
@@ -47,6 +47,12 @@ Pclass vs Fare
 - While there is a correlation between PClass and Fare, there are overlaps between the classes.
 - This could be because some tickets were booked late or children and elderly pay less - concession.
 - There are a lot of people with fares at around 10 dollars.
+
+Significance of tickets with non-numbers
+- Tickets with non-numbers _may_ have to do with place of boarding or destination
+- It is worth noting that a lot of cases have very low survival rates e.g. A/5
+- PC has a relatively high survival rate 39/60
+- This might be useful to note in our models
 
 ## Initial Models
 - Re-create simple python model for gender survival rate in R.

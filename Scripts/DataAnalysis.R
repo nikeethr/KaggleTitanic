@@ -52,6 +52,28 @@ GenerateHistPlotFareVersusPClass <- function(df, split_plots = T){
     } else {
         g + geom_hist + geom_freq
     }
+
+    resetPar()
+}
+
+ExtractNonNumericTickets <- function(df){
+    ind <- regexpr("[0-9]{2,}", df$Ticket)
+    split_ticket_number <- substring(df$Ticket, ind)
+    split_ticket_prefix <- substring(df$Ticket, 1, ind-1)
+    
+    df$TicketNumber <- split_ticket_number
+    df$TicketPrefix <- as.factor(split_ticket_prefix)
+    
+    survival_vs_prefix_table <- table(df$TicketPrefix, df$Survived)
+    print(survival_vs_prefix_table)
+    survival_vs_prefix_table <- as.data.frame(survival_vs_prefix_table)
+    names(survival_vs_prefix_table) <- c("TicketPrefix", "Survived", "Freq")
+    
+    g <- ggplot(survival_vs_prefix_table, aes(x = TicketPrefix, y = Freq, fill = Survived)) + 
+        geom_bar(stat = "identity")
+    print(g)
+
+    return(df)
 }
 
 FactorData <- function(df_train, df_test){
@@ -82,3 +104,4 @@ df_train <- result[[1]]
 df_test <- result[[2]]
 GeneratePairwisePlot(df_train)
 GenerateHistPlotFareVersusPClass(df_train)
+result <- ExtractNonNumericTickets(df_train)
