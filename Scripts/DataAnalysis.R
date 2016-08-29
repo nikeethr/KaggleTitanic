@@ -6,7 +6,8 @@ library(VIM)
 library(ggplot2)
 library(gridExtra)
 library(GGally)
-
+library(dplyr)
+library(RColorBrewer)
 ####################################################################################################
 LoadData <- function(){
     # Loads the data and dumps them into the main environment
@@ -60,20 +61,62 @@ ExtractNonNumericTickets <- function(df){
     ind <- regexpr("[0-9]{2,}", df$Ticket)
     split_ticket_number <- substring(df$Ticket, ind)
     split_ticket_prefix <- substring(df$Ticket, 1, ind-1)
-    
+
     df$TicketNumber <- split_ticket_number
     df$TicketPrefix <- as.factor(split_ticket_prefix)
-    
+
     survival_vs_prefix_table <- table(df$TicketPrefix, df$Survived)
     print(survival_vs_prefix_table)
     survival_vs_prefix_table <- as.data.frame(survival_vs_prefix_table)
     names(survival_vs_prefix_table) <- c("TicketPrefix", "Survived", "Freq")
-    
-    g <- ggplot(survival_vs_prefix_table, aes(x = TicketPrefix, y = Freq, fill = Survived)) + 
+
+    g <- ggplot(survival_vs_prefix_table, aes(x = TicketPrefix, y = Freq, fill = Survived)) +
         geom_bar(stat = "identity")
     print(g)
 
     return(df)
+}
+
+SurvivalOfFemalesAndChildren <- function(df){
+    cat("--------------------------------------------------\n")
+    cat("Survival of Females, Children and Families\n")
+    cat("--------------------------------------------------\n")
+
+    # Box plots
+    # Define children as <= 16 arbitrarily
+    children <- df$Age <= 16
+    female <- df$Sex == "female"
+    female_adults <- !children & female
+    male_adults <- !children & !female
+    df$PCat <- NA
+    df$PCat[children] = "child"
+    df$PCat[female_adults] = "female adult"
+    df$PCat[male_adults] = "male adult"
+
+    df$HasFamily <- NA
+    df$HasFamily = df$SibSp > 0 | df$Parch > 0
+
+    df$PCat <- factor(df$PCat)
+    df$HasFamily <- factor(df$HasFamily)
+    # dplyr group by PCat, Family, and get mean of survival
+
+    df$Survived <- as.numeric(df$Survived) - 1
+
+    result <- as.data.frame(df %>%
+        group_by(HasFamily, PCat) %>%
+        summarise(Count = n(), SurvivalRate = mean(Survived, na.rm=T)))
+
+    print(result)
+
+    g <- ggplot(result, aes(x=PCat, y=SurvivalRate, fill = PCat)) +
+        geom_bar(stat = "identity") +
+        facet_grid(HasFamily~.) +
+        scale_fill_brewer(palette = "Set1")
+
+    print(g)
+
+    return(result)
+    # plot the resultant table (as.dataframe)
 }
 
 FactorData <- function(df_train, df_test){
@@ -96,7 +139,8 @@ resetPar <- function() {
     return(op)
 }
 ####################################################################################################
-
+# @todo: Seperate operations that manipulate training set and repeat them for testing set. This
+# should be done in Preprocessing.R [for future reference]
 LoadData()
 GenerateMissingValuePlots(df_train)
 result <- FactorData(df_train, df_test)
@@ -104,4 +148,5 @@ df_train <- result[[1]]
 df_test <- result[[2]]
 GeneratePairwisePlot(df_train)
 GenerateHistPlotFareVersusPClass(df_train)
-result <- ExtractNonNumericTickets(df_train)
+df_train <- ExtractNonNumericTickets(df_train)
+result <- SurvivalOfFemalesAndChildren(df_train)

@@ -31,7 +31,7 @@ Perform the following:
 - Particularly interested in:
     - What is the relationship between Pclass and Fare? [X]
     - What is the significance of the tickets with non-numbers? [X]
-    - Examine the claim of women and children have higher survival rate?
+    - Examine the claim of women and children have higher survival rate.
     - What is the survival rate of families vs individuals?
     - what is the survival rate based on Pclass? (Perhaps split this by group to get an unbiased
       figure)
@@ -58,3 +58,4 @@ Significance of tickets with non-numbers
 - Re-create simple python model for gender survival rate in R.
 - Run simple random forest model in R.
 - Run sample python scripts to see what they do.
+- Read through tutorials
