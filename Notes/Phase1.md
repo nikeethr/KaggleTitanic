@@ -31,10 +31,10 @@ Perform the following:
 - Particularly interested in:
     - What is the relationship between Pclass and Fare? [X]
     - What is the significance of the tickets with non-numbers? [X]
-    - Examine the claim of women and children have higher survival rate.
-    - What is the survival rate of families vs individuals?
-    - what is the survival rate based on Pclass? (Perhaps split this by group to get an unbiased
-      figure)
+    - Examine the claim of women and children have higher survival rate. [X]
+    - What is the survival rate of families vs individuals? [X]
+    - What is the survival rate based on Pclass? (Perhaps split this by group to get an unbiased
+      figure) [X]
 
 Correlation Plots show some interesting observations:
 - Females have a much higher chance of survival.
@@ -53,6 +53,19 @@ Significance of tickets with non-numbers
 - It is worth noting that a lot of cases have very low survival rates e.g. A/5
 - PC has a relatively high survival rate 39/60
 - This might be useful to note in our models
+
+Survival rates of families, children, women and men
+- Women had a high rate of survival in general >0.75
+- Male children without a family had the lowest rate of survival
+- Males generally had a low rate of survival, except for male children who were part of a family
+- Female childredn who weren't part of a family had the highest rate of survival maybe because they
+  weren't oblidged to stick with family.
+
+Survival rates by Pclass and Fare
+- Those with high fares generally had a higher survival rate, except for Pclass 3 which had a lower
+  survival rate when they paid 20+ as opposed to <20, perhaps based on where they were located.
+- Pclass 1 had the highest survival rate, especially at high fares
+- Pclass 2 had a coin toss survival rate i.e. 0.5
 
 ## Initial Models
 - Re-create simple python model for gender survival rate in R.

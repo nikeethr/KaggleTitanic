@@ -40,7 +40,7 @@ GeneratePairwisePlot <- function(df){
     #ggcorplot(data = df)
 }
 
-GenerateHistPlotFareVersusPClass <- function(df, split_plots = T){
+GenerateHistPlotFareVersusPclass <- function(df, split_plots = T){
     # @todo: needs work on the colours for non-split plot
     g <- ggplot(data = df, aes(x = Fare, fill = Pclass, color = Pclass))
     geom_hist <- geom_histogram(binwidth = 15)
@@ -86,10 +86,13 @@ SurvivalOfFemalesAndChildren <- function(df){
     # Define children as <= 16 arbitrarily
     children <- df$Age <= 16
     female <- df$Sex == "female"
+    female_children <- children & female
+    male_children <- children & !female
     female_adults <- !children & female
     male_adults <- !children & !female
     df$PCat <- NA
-    df$PCat[children] = "child"
+    df$PCat[female_children] = "female child"
+    df$PCat[male_children] = "male child"
     df$PCat[female_adults] = "female adult"
     df$PCat[male_adults] = "male adult"
 
@@ -102,9 +105,11 @@ SurvivalOfFemalesAndChildren <- function(df){
 
     df$Survived <- as.numeric(df$Survived) - 1
 
-    result <- as.data.frame(df %>%
-        group_by(HasFamily, PCat) %>%
-        summarise(Count = n(), SurvivalRate = mean(Survived, na.rm=T)))
+    result <- as.data.frame(df %>% 
+                            group_by(HasFamily, PCat) %>% 
+                            summarise(Count = n(), 
+                                      SurvivalRate = mean(Survived, 
+                                                          na.rm=T)))
 
     print(result)
 
@@ -117,6 +122,29 @@ SurvivalOfFemalesAndChildren <- function(df){
 
     return(result)
     # plot the resultant table (as.dataframe)
+}
+
+SurvivalRateByPclass <- function(df){
+    cat("--------------------------------------------------\n")
+    cat("Survival Rate by Pclass and Fare\n")
+    cat("--------------------------------------------------\n")
+
+    fare.cut <- cut(df$Fare, breaks = c(0,10,20,30,100,Inf), right = F)
+    df$FareGroup <- fare.cut
+
+    df$Survived <- as.numeric(df$Survived) - 1
+
+    result <- as.data.frame(df %>% 
+                            group_by(FareGroup, Pclass)%>% 
+                            summarise(Count = n(), 
+                                      SurvivalRate = mean(Survived, 
+                                                          na.rm=T)))
+     
+    print(result)
+    g <- ggplot(result, aes(x=FareGroup, y=SurvivalRate, fill = Pclass)) +
+        geom_bar(stat = "identity", position = position_dodge()) +
+        scale_fill_brewer(palette = "Set1")
+    print(g)
 }
 
 FactorData <- function(df_train, df_test){
@@ -147,6 +175,13 @@ result <- FactorData(df_train, df_test)
 df_train <- result[[1]]
 df_test <- result[[2]]
 GeneratePairwisePlot(df_train)
-GenerateHistPlotFareVersusPClass(df_train)
+GenerateHistPlotFareVersusPclass(df_train)
 df_train <- ExtractNonNumericTickets(df_train)
 result <- SurvivalOfFemalesAndChildren(df_train)
+
+# (nikeethr)TODO: These are temporary operations to be moved to a different file later they are
+# here for now for convenience sake.
+# (nikeethr)TODO: Refactor analysis by combining the various important aspects, i.e.
+# Tickets, Family children, Pclass, Fare etc. and make an educated guess for the classifier
+# Do the same with rpart incorporating all the variables
+# (nikeethr)TODO: Reformat into google style
